@@ -19,19 +19,28 @@ class Tournament
 public function createPairs(){
    
     $allplayers=[];
+
   foreach($this->players as $k=>$v){
     $allplayers[]=$v[array_key_first($v)];
   }
 
-  $n = count($allplayers);
-for ($r = 0; $r < $n - 1; $r++) { 
+
+  if( count($allplayers) % 2 == 1 ){
+      $allplayers[] = "Player s" ;
+  }
+    $n = count($allplayers);
+        
+for ($r = 0; $r <$n-1 ; ++$r) { 
   $rounds[$r]=[$this->name,date("d.m.Y", strtotime(date("d.m.Y",strtotime(implode(".",(array_reverse(explode('.',$this->date))))))."$r days"))];
    for ($i = 0; $i < $n / 2; $i++) {
-      if($i==$n - 1 - $i){
-         continue;
-      }
+      $opponent = count($allplayers) - 1 - $i ;
 
-      $rounds[$r][] = $allplayers[$i]. $allplayers[$n - 1 - $i];
+      if($allplayers[$i] == 'Player s')
+        continue;
+      elseif($allplayers[$opponent] == 'Player s')
+          continue;
+      else 
+      $rounds[$r][] = $allplayers[$i]. $allplayers[$opponent];
    }
 
    $allplayers[] = array_splice($allplayers, 1, 1)[0];
